@@ -37,8 +37,11 @@ class UsersController < ApplicationController
   def show
     the_username = params.fetch("the_username")
     @user = User.where({ :username => the_username }).at(0)
-
-    render({ :template => "users/show.html.erb" })
+    if session.fetch(:user_id) == @user.id
+      render({ :template => "users/show.html.erb" })
+    else
+      render({:template => "users/guest_show.html.erb"})
+    end
   end
 
   def new_registration_form
